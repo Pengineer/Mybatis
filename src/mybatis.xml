@@ -42,5 +42,6 @@
 
 	<mappers>
 		<mapper resource="hust/dao/EmpMapper.xml"/>
+		<mapper resource="hust/dynamic/dao/EmpDynamicMapper.xml"/>
 	</mappers>
 </configuration>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="empNamespace">
+	<resultMap type="Emp" id="empMap">
+		<id property="id" column="c_id" />
+		<result property="name" column="c_name"/>
+		<result property="birth" column="c_birth"/>
+		<result property="phone" column="c_phone"/>
+	</resultMap>
+
+	<!-- Mybatis动态SQL实现高级检索 -->
+	<select id="highFindByConditions" parameterType="map" resultMap="empMap">
+		select c_id, c_name, c_birth, c_phone
+		from t_emp
+		<where>
+			<if test="pid != null"> and c_id = #{pid}</if>
+			<if test="pname != null"> and c_name = #{pname}</if>
+			<if test="pbirth != null"> and c_birth = #{pbirth}</if>
+			<if test="pphone != null"> and c_phone = #{pphone}</if>
+		</where>
+	</select>
+</mapper>
