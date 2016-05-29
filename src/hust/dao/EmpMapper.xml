@@ -35,5 +35,11 @@
 			values(#{id}, #{name}, #{birth}, #{phone}) 
 	</insert>
 	
+	<select id="findById" parameterType="int" resultMap="empMap">
+		select c_id, c_name, c_birth, c_phone
+		from t_emp
+		where c_id=#{id}
+	</select>
+	
 	
 </mapper>

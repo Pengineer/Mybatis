@@ -39,10 +39,28 @@ public class EmpDao {
 		}
 	}
 	
+	public Emp findById(int id) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = MybatisUtil.getSqlSession();
+			Emp emp = sqlSession.selectOne(Emp.class.getName() + ".findById", id);
+			sqlSession.commit();
+			return emp;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		} finally {
+			MybatisUtil.closeSqlSession();
+		}
+	}
+	
 	public static void main(String[] args) {
 		EmpDao dao = new EmpDao();
 		
-		dao.addEmp1();
-		dao.addEmp2(new Emp(2, "britar", "1991", "131"));
+//		dao.addEmp1();
+//		dao.addEmp2(new Emp(3, "britar", "1992", "13125"));
+		
+		Emp emp = dao.findById(2);
+		System.out.println(emp.getId() + "\t" + emp.getName() + "\t" + emp.getBirth() + "\t" + emp.getPhone());
 	}
 }
