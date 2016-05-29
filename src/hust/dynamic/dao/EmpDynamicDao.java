@@ -54,13 +54,34 @@ public class EmpDynamicDao {
 		}
 	}
 	
+	/**
+	 * Mybatis动态SQL实现动态删除
+	 * 输入参数可以写数组，也可以写可变参数类型 ——> 对应的Mapper.xml中的参数类型都是array
+	 */
+	public void dynamicDeleteArray(int... ids) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = MybatisUtil.getSqlSession();
+			sqlSession.delete("empNamespace.dynamicDeleteArray", ids);
+			sqlSession.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		} finally {
+			MybatisUtil.closeSqlSession();
+		}
+	}
+	
 	public static void main(String[] args) {
 		EmpDynamicDao dao = new EmpDynamicDao();
-		List<Emp> emps = dao.highFindByConditions(null, "britar", null, "131");
-		for (Emp emp : emps) {
-			System.out.println(emp.getId() + "\t" + emp.getName() + "\t" + emp.getBirth() + "\t" + emp.getPhone());
-		}
 		
-		dao.dynamicUpdate(7, null, "1992", "132");
+//		List<Emp> emps = dao.highFindByConditions(null, "britar", null, "131");
+//		for (Emp emp : emps) {
+//			System.out.println(emp.getId() + "\t" + emp.getName() + "\t" + emp.getBirth() + "\t" + emp.getPhone());
+//		}
+		
+//		dao.dynamicUpdate(7, null, "1992", "132");
+		
+		dao.dynamicDeleteArray(8, 10, 9999);
 	}
 }

@@ -23,7 +23,7 @@
 		</where>
 	</select>
 	
-	<!-- Mybatis动态SQL实现初级/高级检索：Mybatis会自动将最后一个逗号去掉 -->
+	<!-- Mybatis动态SQL实现动态更新：Mybatis会自动将最后一个逗号去掉 -->
 	<update id="dynamicUpdate" parameterType="map">
 		update t_emp
 		<set>
@@ -33,4 +33,20 @@
 		</set>
 		where c_id = #{pid}
 	</update>
+	
+	<!-- 动态删除：删除的个数不定，输入参数为数组 -->
+	<delete id="dynamicDeleteArray">
+		delete from t_emp 
+		where c_id in
+		<!-- foreach标签用于迭代数组或列表中的的元素
+		     collection表示传递的参数类型（因为这里有参数类型，因此delete父标签就不用再写了）
+		     open表示in后面的开始符号
+		     close表示结束符号
+		     separator表示元素间分隔符
+		     ids表示传递的数组参数，参数名理论上可任意 -->
+		<foreach collection="array" open="(" close=")" separator="," item="ids">
+			#{ids}
+		</foreach>
+		
+	</delete>
 </mapper>
