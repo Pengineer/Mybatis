@@ -47,6 +47,14 @@
 		<foreach collection="array" open="(" close=")" separator="," item="ids">
 			#{ids}
 		</foreach>
-		
+	</delete>
+	
+	<!-- 动态删除：删除的个数不定，输入参数为列表 -->
+	<delete id="dynamicDeleteList">
+		delete from t_emp 
+		where c_id in
+		<foreach collection="list" open="(" close=")" separator="," item="ids">
+			#{ids}
+		</foreach>
 	</delete>
 </mapper>

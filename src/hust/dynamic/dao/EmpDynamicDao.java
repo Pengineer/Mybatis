@@ -3,6 +3,7 @@ package hust.dynamic.dao;
 import hust.bean.Emp;
 import hust.utils.MybatisUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,24 @@ public class EmpDynamicDao {
 		}
 	}
 	
+	/**
+	 * Mybatis动态SQL实现动态删除
+	 * 输入参数为列表类型 ——> 对应的Mapper.xml中的参数类型都是list
+	 */
+	public void dynamicDeleteList(List<Integer> ids) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = MybatisUtil.getSqlSession();
+			sqlSession.delete("empNamespace.dynamicDeleteList", ids);
+			sqlSession.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		} finally {
+			MybatisUtil.closeSqlSession();
+		}
+	}
+	
 	public static void main(String[] args) {
 		EmpDynamicDao dao = new EmpDynamicDao();
 		
@@ -82,6 +101,13 @@ public class EmpDynamicDao {
 		
 //		dao.dynamicUpdate(7, null, "1992", "132");
 		
-		dao.dynamicDeleteArray(8, 10, 9999);
+//		dao.dynamicDeleteArray(8, 10, 9999);
+		
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(9);
+		list.add(11);
+		list.add(12);
+		list.add(999);
+		dao.dynamicDeleteList(list);
 	}
 }
