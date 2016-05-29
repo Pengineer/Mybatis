@@ -3,7 +3,6 @@ package hust.dynamic.dao;
 import hust.bean.Emp;
 import hust.utils.MybatisUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +90,23 @@ public class EmpDynamicDao {
 		}
 	}
 	
+	/**
+	 * Mybatis动态SQL实现动态插入
+	 */
+	public void dynamicInsert(Emp emp) {
+		SqlSession sqlSession = null;
+		try {
+			sqlSession = MybatisUtil.getSqlSession();
+			sqlSession.delete("empNamespace.dynamicInsert", emp);
+			sqlSession.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		} finally {
+			MybatisUtil.closeSqlSession();
+		}
+	}
+	
 	public static void main(String[] args) {
 		EmpDynamicDao dao = new EmpDynamicDao();
 		
@@ -103,11 +119,15 @@ public class EmpDynamicDao {
 		
 //		dao.dynamicDeleteArray(8, 10, 9999);
 		
-		List<Integer> list = new ArrayList<Integer>();
-		list.add(9);
-		list.add(11);
-		list.add(12);
-		list.add(999);
-		dao.dynamicDeleteList(list);
+//		List<Integer> list = new ArrayList<Integer>();
+//		list.add(9);
+//		list.add(11);
+//		list.add(12);
+//		list.add(999);
+//		dao.dynamicDeleteList(list);
+		
+		dao.dynamicInsert(new Emp(8, "Pony", "1970", "111"));
+		dao.dynamicInsert(new Emp(9, null, "1970", "111"));
+		dao.dynamicInsert(new Emp(10, null, "1970", null));
 	}
 }

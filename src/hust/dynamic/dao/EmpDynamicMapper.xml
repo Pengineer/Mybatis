@@ -57,4 +57,27 @@
 			#{ids}
 		</foreach>
 	</delete>
+	
+	<!-- 动态插入:两个sql标签分别对应字段名和字段值 -->
+	<sql id="key">
+		<!-- insert与update/delete不同，它不会自动去掉最后面的一个逗号，需要使用标签去除 -->
+		<trim suffixOverrides=",">
+			<if test="id != null"> c_id,</if>
+			<if test="name != null">c_name,</if>
+			<if test="birth != null">c_birth,</if>
+			<if test="phone != null">c_phone,</if>
+		</trim>
+	</sql>
+	<sql id="value">
+		<trim suffixOverrides=",">
+			<if test="id != null"> #{id},</if>
+			<if test="name != null">#{name},</if>
+			<if test="birth != null">#{birth},</if>
+			<if test="phone != null">#{phone},</if>
+		</trim>
+	</sql>
+	<insert id="dynamicInsert" parameterType="Emp">
+		<!-- include标签用于引用上面的sql标签 -->
+		insert into t_emp(<include refid="key"></include>) values(<include refid="value"></include>)
+	</insert>
 </mapper>
