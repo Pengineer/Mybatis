@@ -11,7 +11,7 @@
 		<result property="phone" column="c_phone"/>
 	</resultMap>
 
-	<!-- Mybatis动态SQL实现高级检索 -->
+	<!-- Mybatis动态SQL实现初级/高级检索：如果只有一个条件，Mybatis会自动将and关键字去掉 -->
 	<select id="highFindByConditions" parameterType="map" resultMap="empMap">
 		select c_id, c_name, c_birth, c_phone
 		from t_emp
@@ -22,4 +22,15 @@
 			<if test="pphone != null"> and c_phone = #{pphone}</if>
 		</where>
 	</select>
+	
+	<!-- Mybatis动态SQL实现初级/高级检索：Mybatis会自动将最后一个逗号去掉 -->
+	<update id="dynamicUpdate" parameterType="map">
+		update t_emp
+		<set>
+			<if test="pname != null"> c_name = #{pname},</if>
+			<if test="pbirth != null"> c_birth = #{pbirth},</if>
+			<if test="pphone != null"> c_phone = #{pphone},</if>
+		</set>
+		where c_id = #{pid}
+	</update>
 </mapper>
