@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace属性是名称空间，具有唯一性，理论上可随意命名 -->
+<mapper namespace="hust.bean.Emp">
+	<!-- resultMap标签：映射实体与表
+	     type属性：实体全路径
+	     id属性：实体与表映射的唯一标号
+	 -->
+	<resultMap type="Emp" id="empMap">
+		<!-- id标签：映射主键属性
+		     result标签：映射非主键属性
+		     property属性：实体的属性名
+		     column属性：表的字段名
+		 -->
+		<id property="id" column="c_id" />
+		<result property="name" column="c_name"/>
+		<result property="birth" column="c_birth"/>
+		<result property="phone" column="c_phone"/>
+	</resultMap>
+
+	<insert id="addEmp1">
+		insert into t_emp(c_id, c_name, c_birth, c_phone)
+			values(1, 'britar', '1991', '131')
+	</insert>
+	
+	<!-- id属性：插入sql的唯一标识符；
+	     parameterType属性：要执行的dao中的方法的参数，如果是类的话，必须使用全路径类
+	     #{property}：自动通过类的getProperty的方法获取对应的属性值
+	 -->
+	<insert id="addEmp2" parameterType="Emp">
+		insert into t_emp(c_id, c_name, c_birth, c_phone)
+			values(#{id}, #{name}, #{birth}, #{phone}) 
+	</insert>
+	
+	
+</mapper>
