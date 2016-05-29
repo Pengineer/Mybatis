@@ -27,7 +27,7 @@
 	</insert>
 	
 	<!-- id属性：插入sql的唯一标识符；
-	     parameterType属性：要执行的dao中的方法的参数，如果是类的话，必须使用全路径类
+	     parameterType属性：要执行的dao中的方法的参数，如果是实体类的话，必须使用全路径类（这里采用了别名的方式）
 	     #{property}：自动通过类的getProperty的方法获取对应的属性值
 	 -->
 	<insert id="addEmp2" parameterType="Emp">
@@ -35,11 +35,35 @@
 			values(#{id}, #{name}, #{birth}, #{phone}) 
 	</insert>
 	
+	<!-- 如果参数不是一个实体对象，只是一个普通变量，例如int,double,String等，那么这里的#{中间变量名可以随便写，不过提倡使用方法的形参名} -->
 	<select id="findById" parameterType="int" resultMap="empMap">
 		select c_id, c_name, c_birth, c_phone
 		from t_emp
 		where c_id=#{id}
 	</select>
 	
+	<!-- 即使返回的是一个集合类型，但是返回类型依然写集合中元素的类型，特别是在使用resultType属性时要注意 -->
+	<select id="findAll" resultMap="empMap">
+		select c_id, c_name, c_birth, c_phone
+		from t_emp
+	</select>
 	
+	<update id="update" parameterType="Emp">
+		update t_emp 
+		set c_birth=#{birth}
+		where c_id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="Emp">
+		delete from t_emp
+		where c_id=#{id}
+	</delete>
+	
+	<!-- map类型是Mybatis对应到Java双列集合的类型 -->
+	<select id="findAllWithFY" parameterType="map" resultMap="empMap">
+		select c_id, c_name, c_birth, c_phone
+		from t_emp
+		where c_name like #{pname}
+		limit #{pstart}, #{pcount}   <!-- 自动从map中取值 -->
+	</select>
 </mapper>
