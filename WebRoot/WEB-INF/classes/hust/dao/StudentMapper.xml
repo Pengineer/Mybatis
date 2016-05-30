@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hust.bean.Student">
+	<resultMap type="hust.bean.Student" id="studentMapper">
+		<id property="id" column="c_id"/>
+		<result property="name" column="c_name"/>
+		<association property="card" resultMap="hust.bean.Card.cardMapper" />
+	</resultMap>
+	
+	<!-- 一对一查询：要什么字段就查什么字段，避免了hibernate对象查询的冗余性 -->
+	<select id="findById" parameterType="int" resultMap="studentMapper">
+		select s.c_name, c.c_id, c.c_num
+		from t_student s left join t_card c
+		on s.c_card_id = c.c_id
+		where s.c_id = #{id}
+	</select>
+
+</mapper>
