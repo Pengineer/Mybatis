@@ -45,5 +45,7 @@
 		<mapper resource="hust/dynamic/dao/EmpDynamicMapper.xml"/>
 		<mapper resource="hust/dao/StudentMapper.xml"/>
 		<mapper resource="hust/dao/CardMapper.xml"/>
+		<mapper resource="hust/dao/GradeMapper.xml"/>
+		<mapper resource="hust/dao/CourseMapper.xml"/>
 	</mappers>
 </configuration>

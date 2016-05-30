@@ -7,7 +7,8 @@
 	<resultMap type="hust.bean.Student" id="studentMapper">
 		<id property="id" column="c_id"/>
 		<result property="name" column="c_name"/>
-		<association property="card" resultMap="hust.bean.Card.cardMapper" />
+		<association property="card" resultMap="hust.bean.Card.cardMapper" />   <!-- 外键 -->
+		<association property="grade" resultMap="hust.bean.Grade.gradeMapper" />
 	</resultMap>
 	
 	<!-- 一对一查询：要什么字段就查什么字段，避免了hibernate对象查询的冗余性 -->
@@ -17,5 +18,22 @@
 		on s.c_card_id = c.c_id
 		where s.c_id = #{id}
 	</select>
+	
+	<!-- 多对一：返回的是一个集合，但是resultMap只需要写集合中元素的类型，具体的集合查询由程序保证-->
+	<select id="findAllByName" parameterType="string" resultMap="studentMapper">
+		select s.c_id,s.c_name,g.c_leaderName
+		from t_student s inner join t_grade g
+		on s.c_grade_id = g.c_id
+		where g.c_name=#{name}
+	</select>
 
+	<!-- 多对多 -->
+	<select id="findALlByCourseName" parameterType="string" resultMap="studentMapper">
+		select s.c_name
+		from t_student s inner join t_course_student cs
+		on s.c_id = cs.c_cid
+		inner join t_course c
+		on cs.c_sid = c.c_id
+		where c.c_name=#{name}
+	</select>
 </mapper>
